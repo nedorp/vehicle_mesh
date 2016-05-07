@@ -2,6 +2,7 @@ package places;
 
 import transport.Car;
 
+/** Useful for each object to keep track of the position in the world */
 public class Position {
 
     public Position(double x, double y) {

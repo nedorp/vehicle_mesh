@@ -4,6 +4,7 @@ import transport.Car;
 
 import java.util.LinkedList;
 
+/** This is a station for cars */
 public class Station {
 
     LinkedList<Car> carPool;

@@ -1,3 +1,6 @@
+package simulation;
+
+import model.MovingObject;
 import people.Passenger;
 import protocol.Talk;
 import transport.Car;
@@ -7,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/** Centralized Boss Module that organize all the events */
 public class StreetGrid {
 
     private static final long INTERVAL_BEACON = 3000;
@@ -21,7 +25,7 @@ public class StreetGrid {
 
     public void worldCycle() throws InterruptedException {
 
-        while(true) {
+        while (true) {
 
             freeze.set(true);
 
@@ -52,11 +56,19 @@ public class StreetGrid {
                 }
             }
 
+            /** Simple case: all the cars are synchronized */
             Thread.sleep(INTERVAL_BEACON);
         }
 
 
     }
 
+    /**
+     * Allows object to become really movable
+     * @param movingObject the object that wants to be moved
+     * @param movementInterval time between 2 movements
+     */
+    public void registerObject(MovingObject movingObject, int movementInterval) {
 
+    }
 }

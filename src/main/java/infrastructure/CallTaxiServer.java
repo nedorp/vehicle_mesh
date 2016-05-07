@@ -23,7 +23,7 @@ public class CallTaxiServer {
      */
     public void handleRequest( Passenger passenger, Position callingPosition, Position requiredDestination ){
 
-        // checkPassenger based on registration and past
+        // TODO checkPassenger based on registration and past
 
         Car closestCar = registeredCars.get(0);
         double shortestDistance = distance(closestCar.position, callingPosition);
