@@ -1,3 +1,4 @@
+/* Author: Lorenzo Rossi GNU GPL License v3.0 */
 package infrastructure;
 
 import people.Passenger;
