@@ -4,6 +4,8 @@ import places.Position;
 
 public class MathOperation {
 
+    public static double FULL_ANGLE = 2*Math.PI;
+
     public static double distance(Position p, Position q){
         return Math.sqrt(
 
