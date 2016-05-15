@@ -44,8 +44,14 @@ public class CallTaxiServer {
         // todo si potrebbe fare un sort secondo la distanza dal passeggero e in quel caso si potrebbe fare una scelta
         // todo piu accurata. Basata sia sulla vicinanza col passeggero, sia sulla percorrenza
 
-        closestCar.addCommand(GO_TO, callingPosition);
-        closestCar.addCommand(LOAD_PASSENGER, passenger);
+        try {
+
+            closestCar.addCommand(GO_TO, callingPosition);
+            closestCar.addCommand(LOAD_PASSENGER, passenger);
+
+        } catch (InterruptedException ie){
+            System.out.println("Command Queue interrupted while waiting!");
+        }
 
     }
 }

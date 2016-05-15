@@ -24,11 +24,15 @@ public class MovingObject {
      * Constructor
      * @param movementInterval time between two movement
      * @param godModule the module that is delegated to move this object
+     * @param position initial position of the object
      */
-    MovingObject(int movementInterval, StreetGrid godModule){
+    public MovingObject(int movementInterval, StreetGrid godModule, Position position){
 
         // Register the object in order to get moved each movementInterval seconds
         godModule.registerObject(this,movementInterval);
+
+        // Set the position
+        this.position = position;
 
     }
 

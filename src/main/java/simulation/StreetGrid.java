@@ -1,17 +1,35 @@
+/** AUTHOR: Lorenzo Rossi */
 package simulation;
 
 import model.MovingObject;
 import people.Passenger;
+import places.Position;
+import places.Station;
 import protocol.Talk;
 import transport.Car;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/** Centralized Boss Module that organize all the events */
+/** Centralized Boss Module that organize all the events
+ *  SIMULATES:
+ *
+ *      wireless connection among cars,
+ *      passenger calls to the server,
+ *      mechanical movement of object
+ *
+ *      */
 public class StreetGrid {
+
+    // Topology
+    private static int GEO_WIDTH = 10000;
+    private static int GEO_HEIGHT = 10000;
+
+    // RNG
+    private static ThreadLocalRandom rng = ThreadLocalRandom.current();
 
     private static final long INTERVAL_BEACON = 3000;
     AtomicBoolean freeze = new AtomicBoolean(false);
@@ -20,8 +38,54 @@ public class StreetGrid {
 
     ExecutorService workEngine = Executors.newFixedThreadPool(NUM_THREADS);
 
+    ArrayList<Station> worldStation = new ArrayList<>();
     ArrayList<Car> worldCars = new ArrayList<>();
     ArrayList<Passenger> outsidePassengers = new ArrayList<>();
+
+    public StreetGrid(int numberOfStation, int numberOfCars, int numberOfPassengers){
+
+        int coordX, coordY;
+
+        // Each station has at least one car
+        numberOfCars -= numberOfStation;
+
+        // Create Stations
+        for(int indexStation = 0; indexStation < numberOfStation; indexStation++){
+
+            // Randomize coordinates
+            coordX = rng.nextInt(GEO_WIDTH);
+            coordY = rng.nextInt(GEO_HEIGHT);
+
+            Position stationPosition = new Position(coordX,coordY);
+
+            int maxCarsPerStation = (numberOfCars / numberOfStation) * 2;
+            // Randomize number of cars for station
+            int carsHere = rng.nextInt(numberOfCars);
+
+            // Check for unbalancing station
+            if(carsHere > maxCarsPerStation)
+                carsHere = maxCarsPerStation;
+
+            numberOfCars -= carsHere;
+
+            Station station = new Station(carsHere + 1, this, stationPosition, "Car_Station_" + (indexStation + 1));
+            worldStation.add(station);
+            System.out.println("Creating Station in \t\t\t(X: " + coordX + ", Y: " + coordY + ")");
+
+
+        }
+
+        // Create Passengers
+        for(int indexPassenger = 0; indexPassenger < numberOfPassengers; indexPassenger++){
+
+            // Randomize coordinates
+            coordX = rng.nextInt(GEO_WIDTH);
+            coordY = rng.nextInt(GEO_HEIGHT);
+
+            Position passengerPosition = new Position(coordX,coordY);
+            outsidePassengers.add(new Passenger(this,passengerPosition));
+        }
+    }
 
     public void worldCycle() throws InterruptedException {
 
