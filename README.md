@@ -1,4 +1,4 @@
-# vehicle_mesh
+# vehicle_mesh (Work in Progress)
 Mesh network organization for vehicles
 
 #Structure
