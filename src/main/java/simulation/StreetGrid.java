@@ -9,6 +9,7 @@ import protocol.Talk;
 import transport.Car;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
@@ -29,7 +30,7 @@ public class StreetGrid {
     private static int GEO_HEIGHT = 10000;
 
     // RNG
-    private static ThreadLocalRandom rng = ThreadLocalRandom.current();
+    private final Random rng;
 
     private static final long INTERVAL_BEACON = 3000;
     AtomicBoolean freeze = new AtomicBoolean(false);
@@ -43,6 +44,19 @@ public class StreetGrid {
     ArrayList<Passenger> outsidePassengers = new ArrayList<>();
 
     public StreetGrid(int numberOfStation, int numberOfCars, int numberOfPassengers){
+        this(numberOfStation, numberOfCars, numberOfPassengers, ThreadLocalRandom.current());
+    }
+
+    public StreetGrid(int numberOfStation, int numberOfCars, int numberOfPassengers, long seed){
+        this(numberOfStation, numberOfCars, numberOfPassengers, new Random(seed));
+    }
+
+    private StreetGrid(int numberOfStation, int numberOfCars, int numberOfPassengers, Random rng){
+
+        if (numberOfStation <= 0 || numberOfCars < numberOfStation || numberOfPassengers < 0) {
+            throw new IllegalArgumentException("Use at least one station, one car per station, and a nonnegative passenger count.");
+        }
+        this.rng = rng;
 
         int coordX, coordY;
 
@@ -58,13 +72,9 @@ public class StreetGrid {
 
             Position stationPosition = new Position(coordX,coordY);
 
-            int maxCarsPerStation = (numberOfCars / numberOfStation) * 2;
-            // Randomize number of cars for station
-            int carsHere = rng.nextInt(numberOfCars);
-
-            // Check for unbalancing station
-            if(carsHere > maxCarsPerStation)
-                carsHere = maxCarsPerStation;
+            // Reserve one car per station and distribute every remaining car.
+            int remainingStations = numberOfStation - indexStation;
+            int carsHere = remainingStations == 1 ? numberOfCars : numberOfCars / remainingStations;
 
             numberOfCars -= carsHere;
 
@@ -133,6 +143,8 @@ public class StreetGrid {
      * @param movementInterval time between 2 movements
      */
     public void registerObject(MovingObject movingObject, int movementInterval) {
-
+        if (movingObject instanceof Car) {
+            worldCars.add((Car) movingObject);
+        }
     }
 }

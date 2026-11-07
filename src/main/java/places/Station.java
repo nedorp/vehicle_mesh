@@ -26,7 +26,8 @@ public class Station extends StaticObject {
         for(int i=0; i< initialCars;i++){
             // TODO Posizionare auto in modo corretto (non sovrapporere) (posizionare in modo equidistante intorno alla stazione)
             // TODO 360° / numcars angolo tra un' auto e l'altra
-            carPool.add(new Car(DEFAULT_SEATS,worldOfAction,position));
+            carPool.add(new Car(DEFAULT_SEATS,worldOfAction,
+                    new Position(position.getCoordX(), position.getCoordY())));
         }
     }
 
