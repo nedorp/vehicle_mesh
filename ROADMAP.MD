@@ -32,10 +32,13 @@ The goal is a platform for developing vehicle networks for passenger transport a
 
 ## Supporting simulation and evaluation work
 
-- [ ] Complete movement scheduling, active vehicle registration, command execution, and inter-vehicle communication.
-- [ ] Correct and validate fleet allocation and vehicle capacity handling.
+- [x] Add a finite, seeded console demo with nearest-idle-car assignment, movement, pickups, arrivals, and basic fleet distance and waiting-time statistics.
+- [x] Track total fleet movement steps and energy with a cost of 1 energy unit per moving-car step, including empty travel.
+- [ ] Complete general-purpose movement scheduling, legacy command execution, and inter-vehicle communication.
+- [x] Allocate and register the full requested fleet, with independent positions for cars at the same station.
+- [ ] Complete vehicle capacity handling and passenger pooling in the general simulation.
 - [ ] Model parcel pickup, transport, transfer, and delivery alongside passenger transport.
-- [ ] Introduce an energy-consumption model and fleet-wide metrics so that global energy objectives can be evaluated.
+- [ ] Extend the abstract step-based energy counter with a realistic vehicle energy-consumption model so that global energy objectives can be evaluated.
 - [ ] Add reproducible scenarios and comparable results for different algorithms and objective functions.
 - [ ] Measure waiting and travel times by passenger class, energy consumption, delivery performance, vehicle utilization, and the effects of transfers.
 
