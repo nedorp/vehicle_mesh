@@ -1,0 +1,5 @@
+# Java compiled classes
+*.class
+
+# Maven and local build output
+/target/
